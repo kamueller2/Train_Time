@@ -1,0 +1,12 @@
+.float {
+    float: right;
+}
+
+.container {
+    width: 100%;
+}
+
+#add-train {
+    justify-content: right;
+    display: block;
+}
