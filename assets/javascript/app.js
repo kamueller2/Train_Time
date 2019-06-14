@@ -90,7 +90,7 @@ $(document).ready(function() {
         // next train
 
         var nextTrain = moment().add(minToArrival, "minutes");
-        var train = moment(nextTrain).format("HH:mm");
+        var train = moment(nextTrain).format("LT");
 
         $('#trains-row').append(
             '<tr><td>' + childSnapshot.val().name +
@@ -106,7 +106,7 @@ $(document).ready(function() {
 
 
 
-
+// OLD LOGIC
 
 // var startTimeConverted = moment(snapshot.val().startTime, "HH:mm").subtract(10, "years");
 // console.log(firstTimeConverted);
