@@ -7,6 +7,10 @@
 }
 
 #add-train {
-    justify-content: right;
+    /* justify-content: right; */
     display: block;
+}
+
+div#add-train {
+    float: left;
 }
