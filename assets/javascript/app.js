@@ -32,7 +32,8 @@ $(document).ready(function() {
         // grabs user input
         var trainName = $('#train-name').val().trim();
         var destination = $('#destination').val().trim();
-        var firstTrain = moment($('#first-train').val().trim(), "HH:mm").subtract(1, "years").format("X");
+        var firstTrain = $("#first-train").val().trim();
+        //moment($('#first-train').val().trim(), "HH:mm").subtract(1, "years").format("X");
         var freq = $('#frequency').val().trim();
 
 
@@ -67,7 +68,7 @@ $(document).ready(function() {
 
     // firebase event for adding trains to database and a row in the html when user adds entry
     database.ref().on("child_added", function(snapshot) {
-        var firstTimeConverted = moment(snapshot.val().startTime, "HH:mm").subtract(1, "years");
+        var firstTimeConverted = moment(snapshot.val().startTime, "HH:mm").subtract(10, "years");
         console.log(firstTimeConverted);
 
         var currentTime = moment();
@@ -95,10 +96,10 @@ $(document).ready(function() {
         var key = snapshot.key;
 
         var newRow = $('<tr>');
-        newRow.append($('<td>' + snapshot.val().trainName + "</td>"));
+        newRow.append($('<td>' + snapshot.val().name + "</td>"));
         newRow.append($("<td>" + snapshot.val().destination + "</td>"));
         newRow.append($("<td class='text-center'>" + snapshot.val().frequency + "</td>"));
-        newRow.append($("<td class='text-center'>" + moment(nextTrain).format("ET") + "</td>"));
+        newRow.append($("<td class='text-center'>" + moment(nextTrain).format("LT") + "</td>"));
         newRow.append($("<td class='text-center'>" + minToArrival + "</td>"));
         newRow.append($("<td class='text-center'><button class='arrival btn btn-danger btn-xs' data-key='" + key + "'>X</button></td>"));
         $('#trains-row').append(newRow);
