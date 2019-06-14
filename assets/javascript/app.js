@@ -67,52 +67,92 @@ $(document).ready(function() {
     })
 
     // firebase event for adding trains to database and a row in the html when user adds entry
-    database.ref().on("child_added", function(snapshot) {
-        var firstTimeConverted = moment(snapshot.val().startTime, "HH:mm").subtract(10, "years");
-        console.log(firstTimeConverted);
+    database.ref().on("child_added", function(childSnapshot) {
+        var newTrain = childSnapshot.val().trainName;
+        var newLocation = childSnapshot.val().destination;
+        var newFirstTrain = childSnapshot.val().firstTrain;
+        var newFreq = childSnapshot.val().frequency;
 
-        var currentTime = moment();
-        console.log('CURRENT TIME: ' + moment(currentTime).format("hh:mm"));
 
-        $('#current-time').append(currentTime);
 
-        // time difference
-        var timeDiff = moment().diff(moment(firstTimeConverted), "minutes");
-        console.log("DIFFERENCE IN TIME: " + timeDiff);
+        var startTimeConverted = moment(newFirstTrain, "hh:mm").subtract(1, "years");
 
-        // time remaining
-        var timeRemain = timeDiff % snapshot.val().frequency;
-        console.log(timeRemain);
+        var currentT = moment();
 
-        // mins until train
-        var minToArrival = snapshot.val().frequency - timeRemain;
-        console.log("MINUTES TILL TRAIN: " + minToArrival);
+        // difference btwn times
+        var diffTime = moment().diff(moment(startTimeConverted), "minutes");
+
+        var timeRemain = diffTime % newFreq;
+
+        // mins until next train
+        var minToArrival = newFreq - timeRemain;
 
         // next train
+
         var nextTrain = moment().add(minToArrival, "minutes");
-        console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+        var train = moment(nextTrain).format("HH:mm");
+
+        $('#trains-row').append(
+            '<tr><td>' + childSnapshot.val().name +
+            '</td><td>' + newLocation +
+            '</td><td>' + newFreq +
+            '</td><td>' + train +
+            '</td><td>' + minToArrival + ' </td></tr>');
 
 
-        var key = snapshot.key;
-
-        var newRow = $('<tr>');
-        newRow.append($('<td>' + snapshot.val().name + "</td>"));
-        newRow.append($("<td>" + snapshot.val().destination + "</td>"));
-        newRow.append($("<td class='text-center'>" + snapshot.val().frequency + "</td>"));
-        newRow.append($("<td class='text-center'>" + moment(nextTrain).format("LT") + "</td>"));
-        newRow.append($("<td class='text-center'>" + minToArrival + "</td>"));
-        newRow.append($("<td class='text-center'><button class='arrival btn btn-danger btn-xs' data-key='" + key + "'>X</button></td>"));
-        $('#trains-row').append(newRow);
-        // var name = snapshot.val().name;
-        //   var destination = snapshot.val().destination;
-        //   var firstTrain = snapshot.val().firstTrain;
-        //   var frequency = snapshot.val().frequency;
-        //   console.log(snapshot.val());
-
-        //   var remainder = moment().diff(moment.unix(firstTrain), "minutes") % frequency;
-        //   var minutes = frequency - remainder;
-        //   var arrival = moment().add(minutes, "m").format("hh:mm A");
-
-        //   $("#schedule > tBody").append("<tr><td>" + name + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + arrival + "</td><td>" + minutes + "</td></tr>");
     })
 })
+
+
+
+
+
+
+// var startTimeConverted = moment(snapshot.val().startTime, "HH:mm").subtract(10, "years");
+// console.log(firstTimeConverted);
+
+// var currentTime = moment();
+// console.log('CURRENT TIME: ' + moment(currentTime).format("hh:mm"));
+
+// $('#current-time').append(currentTime);
+
+// // time difference
+// var timeDiff = moment().diff(moment(firstTimeConverted), "minutes");
+// console.log("DIFFERENCE IN TIME: " + timeDiff);
+
+// // time remaining
+// var timeRemain = timeDiff % snapshot.val().frequency;
+// console.log(timeRemain);
+
+// // mins until train
+// var minToArrival = snapshot.val().frequency - timeRemain;
+// console.log("MINUTES TILL TRAIN: " + minToArrival);
+
+// // next train
+// var nextTrain = moment().add(minToArrival, "minutes");
+// console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+
+
+// var key = snapshot.key;
+
+// var newRow = $('<tr>');
+// newRow.append($('<td>' + snapshot.val().name + "</td>"));
+// newRow.append($("<td>" + snapshot.val().destination + "</td>"));
+// newRow.append($("<td class='text-center'>" + snapshot.val().frequency + "</td>"));
+// newRow.append($("<td class='text-center'>" + moment(nextTrain).format("LT") + "</td>"));
+// newRow.append($("<td class='text-center'>" + minToArrival + "</td>"));
+// newRow.append($("<td class='text-center'><button class='arrival btn btn-danger btn-xs' data-key='" + key + "'>X</button></td>"));
+// $('#trains-row').append(newRow);
+
+// OLD CODE 
+// var name = snapshot.val().name;
+//   var destination = snapshot.val().destination;
+//   var firstTrain = snapshot.val().firstTrain;
+//   var frequency = snapshot.val().frequency;
+//   console.log(snapshot.val());
+
+//   var remainder = moment().diff(moment.unix(firstTrain), "minutes") % frequency;
+//   var minutes = frequency - remainder;
+//   var arrival = moment().add(minutes, "m").format("hh:mm A");
+
+//   $("#schedule > tBody").append("<tr><td>" + name + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + arrival + "</td><td>" + minutes + "</td></tr>");
