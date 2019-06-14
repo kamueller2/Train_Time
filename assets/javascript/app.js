@@ -101,7 +101,7 @@ $(document).ready(function() {
         newRow.append($("<td class='text-center'>" + moment(nextTrain).format("ET") + "</td>"));
         newRow.append($("<td class='text-center'>" + minToArrival + "</td>"));
         newRow.append($("<td class='text-center'><button class='arrival btn btn-danger btn-xs' data-key='" + key + "'>X</button></td>"));
-
+        $('#trains-row').append(newRow);
         // var name = snapshot.val().name;
         //   var destination = snapshot.val().destination;
         //   var firstTrain = snapshot.val().firstTrain;
