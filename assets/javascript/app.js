@@ -25,7 +25,7 @@ $(document).ready(function() {
     // };
 
     // adding new trains
-    $(".add-train").on("click", function(event) {
+    $("#submit").on("click", function(event) {
         event.preventDefault()
 
 
