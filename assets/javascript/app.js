@@ -47,7 +47,7 @@ $(document).ready(function() {
         };
 
         // uploads train data to db
-        database.ref().push(newTrain);
+        database.ref('train-times').push(newTrain);
 
         // logs to console
         console.log(newTrain.name);
@@ -67,12 +67,11 @@ $(document).ready(function() {
     })
 
     // firebase event for adding trains to database and a row in the html when user adds entry
-    database.ref().on("child_added", function(childSnapshot) {
+    database.ref('train-times').on("child_added", function(childSnapshot) {
         var newTrain = childSnapshot.val().trainName;
         var newLocation = childSnapshot.val().destination;
         var newFirstTrain = childSnapshot.val().firstTrain;
         var newFreq = childSnapshot.val().frequency;
-
 
 
         var startTimeConverted = moment(newFirstTrain, "hh:mm").subtract(1, "years");
@@ -101,6 +100,20 @@ $(document).ready(function() {
 
 
     })
+
+    var ref = firebase.database().ref();
+    ref.orderByKey().on("child_added", function(snapshot) {
+
+        //     if (snapshot.key !== 'train-times') {
+        //         ref.remove().then(function() {
+        //             console.log("Remove succeeded.")
+        //         }).catch(function(error) {
+        //             console.log("Remove failed: " + error.message)
+        //         });
+
+        //     }
+        console.log(snapshot.key);
+    });
 })
 
 
